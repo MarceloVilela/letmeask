@@ -4,13 +4,12 @@ import toast from 'react-hot-toast';
 
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
+import { useRoom } from '../hooks/useRoom';
 import { Question } from '../components/Question';
+import { Header } from '../components/Header';
 import { Button } from '../components/Button';
-import { RoomCode } from '../components/RoomCode';
 
 import '../styles/room.scss';
-import logoImg from '../assets/images/logo.svg';
-import { useRoom } from '../hooks/useRoom';
 
 type RoomParams = {
   id: string;
@@ -72,12 +71,7 @@ export function Room() {
 
   return (
     <div id="page-room">
-      <header>
-        <div className="content">
-          <img src={logoImg} alt="Letmeask" />
-          <RoomCode code={roomId} />
-        </div>
-      </header>
+      <Header roomId={roomId} />
 
       <main className="content">
         <div className="room-title">

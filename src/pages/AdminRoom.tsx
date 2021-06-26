@@ -3,15 +3,16 @@ import toast from 'react-hot-toast';
 
 import { database } from '../services/firebase';
 import { useRoom } from '../hooks/useRoom';
+import { Header } from '../components/Header';
 import { Question } from '../components/Question';
 import { Button } from '../components/Button';
-import { RoomCode } from '../components/RoomCode';
 
 import '../styles/room.scss';
-import logoImg from '../assets/images/logo.svg';
 import deleteImg from '../assets/images/delete.svg';
 import checkImg from '../assets/images/check.svg';
 import answerImg from '../assets/images/answer.svg';
+import { useAuth } from '../hooks/useAuth';
+import { useEffect } from 'react';
 
 type RoomParams = {
   id: string;
@@ -22,7 +23,15 @@ export function AdminRoom() {
   const params = useParams<RoomParams>();
   const { id: roomId } = params;
 
-  const { questions, title } = useRoom(roomId);
+  const { questions, title, roomAuthorId } = useRoom(roomId);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user?.id !== roomAuthorId) {
+      //toast.error('Página disponível apenas para responsável da sala');
+      //history.push('/');
+    }
+  }, [user, roomAuthorId, history])
 
   async function handleEndRoom() {
     if (window.confirm('Tem certeza que você deseja encerrar esta sala?')) {
@@ -61,15 +70,9 @@ export function AdminRoom() {
 
   return (
     <div id="page-room">
-      <header>
-        <div className="content">
-          <img src={logoImg} alt="Letmeask" />
-          <div>
-            <RoomCode code={roomId} />
-            <Button onClick={handleEndRoom}>Encerrar sala</Button>
-          </div>
-        </div>
-      </header>
+      <Header roomId={roomId}>
+        <Button onClick={handleEndRoom}>Encerrar sala</Button>
+      </Header>
 
       <main className="content">
         <div className="room-title">
