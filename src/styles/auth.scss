@@ -63,8 +63,6 @@
     }
 
     form {
-      margin-bottom: 16px;
-
       input {
         height: 50px;
         border-radius: 8px;
@@ -91,6 +89,16 @@
       a {
         color: #e559f9;
       }
+    }
+
+    .acess-profile {
+      margin: 16px 0;
+      font-size: 14px;
+      color: #a8a8b3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;;
     }
 
     .create-room {

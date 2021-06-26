@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
+import { UserInfo } from '../components/UserInfo';
 import { Button } from '../components/Button';
 
 import '../styles/auth.scss';
@@ -90,12 +91,15 @@ export function Home() {
             </Button>
           </form>
 
+          <div className="acess-profile">
+            Acessando como {!user?.name && 'visitante'}
+            {user?.name && <UserInfo />}
+          </div>
+
           <Button type="button" onClick={handleIdentify}>
             <img src={googleIconImg} alt="Logo do Google" />
             Entrar com o Google
           </Button>
-
-          <p>{user?.name}</p>
         </div>
       </main>
     </div>

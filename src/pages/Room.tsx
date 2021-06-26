@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 import { Question } from '../components/Question';
 import { Header } from '../components/Header';
+import { UserInfo } from '../components/UserInfo';
 import { Button } from '../components/Button';
 
 import '../styles/room.scss';
@@ -20,11 +21,11 @@ export function Room() {
   const params = useParams<RoomParams>();
   const { id: roomId } = params;
 
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
   const { questions, title, roomAuthorId } = useRoom(roomId);
 
   const [newQuestion, setNewQuestion] = useState('');
-  
+
   useEffect(() => {
     if ((user?.id && roomAuthorId) && user?.id !== roomAuthorId) {
       toast.error('Página disponível apenas para responsável da sala');
@@ -96,15 +97,15 @@ export function Room() {
           <div className="form-footer">
             {user
               ? (
-                <div className="user-info">
-                  <img src={user.avatar} alt={user.name} />
-                  <span>{user.name}</span>
-                </div>
+                <UserInfo />
               )
               : (
                 <span>
                   Para enviar uma pergunta,
-                  <button>faça seu login</button>
+                  <button 
+                    type="button" 
+                    onClick={async () => await signInWithGoogle()}
+                  >faça seu login</button>
                 </span>
               )}
             <Button type="submit" disabled={!user}>Enviar perguntas</Button>

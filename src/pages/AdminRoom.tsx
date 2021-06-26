@@ -8,6 +8,7 @@ import { useRoom } from '../hooks/useRoom';
 import { Header } from '../components/Header';
 import { Question } from '../components/Question';
 import { ModalConfirm } from '../components/ModalConfirm';
+import { UserInfo } from '../components/UserInfo';
 import { Button } from '../components/Button';
 
 import '../styles/room.scss';
@@ -102,6 +103,8 @@ export function AdminRoom() {
           <h1>Sala {title}</h1>
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
+
+        <div className="acess-profile">Administrando sala como <UserInfo /></div>
 
         <div className="question-list">
           {questions.map(question => {
