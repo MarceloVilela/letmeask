@@ -1,0 +1,47 @@
+.modal-confirm {
+  height: 300px;
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 48px;
+    height: 48px;
+
+    filter: invert(0.5) sepia(1) saturate(9) hue-rotate(320deg);
+  }
+
+  h2 {
+    margin-top: 24px;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+    color: #29292e;
+  }
+
+  p {
+    margin-top: 16px;
+    margin-bottom: 24px;
+    font: 400 16px "Roboto", sans-serif;
+  }
+
+  .btn-container {
+    display: flex;
+    gap: 16px;
+
+    button {
+      height: 36px;
+
+      &.btn-cancel {
+        background: #ccc;
+        color: #666;
+      }
+
+      &.btn-confirm {
+        background: #ea4338;
+      }
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import Modal from 'react-modal';
 
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
@@ -25,11 +24,7 @@ export function Room() {
   const { questions, title, roomAuthorId } = useRoom(roomId);
 
   const [newQuestion, setNewQuestion] = useState('');
-
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const modalTitle = 'Encerrar sala';
-  const modalSubtitle = 'Tem certeza que você deseja encerrar esta sala?';
-
+  
   useEffect(() => {
     if ((user?.id && roomAuthorId) && user?.id !== roomAuthorId) {
       toast.error('Página disponível apenas para responsável da sala');
@@ -143,20 +138,6 @@ export function Room() {
             )
           })}
         </div>
-
-        <Modal
-          isOpen={modalIsOpen}
-          //onAfterOpen={afterOpenModal}
-          onRequestClose={() => setIsOpen(false)}
-          //style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <h2>{modalTitle}</h2>
-          <button onClick={() => setIsOpen(false)}>{modalSubtitle}</button>
-          
-          <button>Cancelar</button>
-          <button>Sim, encerrar</button>
-        </Modal>
 
       </main>
     </div>

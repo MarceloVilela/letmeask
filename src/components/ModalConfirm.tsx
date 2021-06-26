@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 
 import { Button } from '../components/Button';
-import '../styles/header.scss';
+import '../styles/modal-confirm.scss';
 import deleteImg from '../assets/images/delete.svg';
 import closeImg from '../assets/images/close.svg';
 
