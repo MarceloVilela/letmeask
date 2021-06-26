@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -5,6 +6,7 @@ import { database } from '../services/firebase';
 import { useRoom } from '../hooks/useRoom';
 import { Header } from '../components/Header';
 import { Question } from '../components/Question';
+import { ModalConfirm } from '../components/ModalConfirm';
 import { Button } from '../components/Button';
 
 import '../styles/room.scss';
@@ -12,7 +14,6 @@ import deleteImg from '../assets/images/delete.svg';
 import checkImg from '../assets/images/check.svg';
 import answerImg from '../assets/images/answer.svg';
 import { useAuth } from '../hooks/useAuth';
-import { useEffect } from 'react';
 
 type RoomParams = {
   id: string;
@@ -26,30 +27,47 @@ export function AdminRoom() {
   const { questions, title, roomAuthorId } = useRoom(roomId);
   const { user } = useAuth();
 
+  const [idQuestionToDelete, setIdQuestionToDelete] = useState('');
+  const [confirmActionName, setConfirmActionName] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalSubtitle, setModalSubtitle] = useState('');
+
+
   useEffect(() => {
-    if (user?.id !== roomAuthorId) {
-      //toast.error('Página disponível apenas para responsável da sala');
-      //history.push('/');
-    }
-  }, [user, roomAuthorId, history])
-
-  async function handleEndRoom() {
-    if (window.confirm('Tem certeza que você deseja encerrar esta sala?')) {
-      await database.ref(`/rooms/${roomId}`).update({
-        endedAt: new Date()
-      });
-
-      toast.success('Sala encerrada com sucesso');
+    if ((user?.id && roomAuthorId) && user?.id !== roomAuthorId) {
+      toast.error('Página disponível apenas para responsável da sala');
       history.push('/');
     }
+  }, [user?.id, roomAuthorId, history])
+
+  async function handleEndRoom() {
+    setModalTitle('Encerrar sala');
+    setModalSubtitle('Tem certeza que você deseja encerrar esta sala?');
+    setConfirmActionName('endRoom');
+  }
+
+  async function handleRequestEndRoom() {
+    await database.ref(`/rooms/${roomId}`).update({
+      endedAt: new Date()
+    });
+
+    toast.success('Sala encerrada com sucesso');
+    setConfirmActionName('');
+    history.push('/');
   }
 
   async function handleDeleteQuestion(questionId: string) {
-    if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
-      await database.ref(`/rooms/${roomId}/questions/${questionId}`).remove();
-    }
+    setModalTitle('Excluir pergunta');
+    setModalSubtitle('Tem certeza que você deseja excluir esta pergunta?');
+    setConfirmActionName('deleteQuestion');
+    setIdQuestionToDelete(questionId);
+  }
+
+  async function handleRequestDeleteQuestion() {
+    await database.ref(`/rooms/${roomId}/questions/${idQuestionToDelete}`).remove();
 
     toast.success('Pergunta excluída com sucesso');
+    setConfirmActionName('');
   }
 
   async function handleCheckQuestionAsAnswered(questionId: string) {
@@ -120,6 +138,16 @@ export function AdminRoom() {
             )
           })}
         </div>
+
+        <ModalConfirm
+          onCancel={() => setConfirmActionName('')}
+          onConfirm={confirmActionName === 'deleteQuestion' ? handleRequestDeleteQuestion : handleRequestEndRoom}
+          modalIsOpen={!!confirmActionName}
+          modalTitle={modalTitle}
+          modalSubtitle={modalSubtitle}
+          modalActionLabel={confirmActionName === 'deleteQuestion' ? 'excluir' : 'encerrar'}
+          icon={confirmActionName === 'deleteQuestion' ? 'delete' : 'close'}
+        />
       </main>
     </div>
   );

@@ -43,11 +43,16 @@ export function useRoom(roomId: string) {
       const firebaseQuestions: FirebaseQuestions = databaseRoom.questions;
 
       console.log(roomId, firebaseQuestions);
-      
+
       if (!firebaseQuestions) {
-        return;
+        setTitle(databaseRoom.title);
+        setRoomAuthorId(databaseRoom.authorId);
+
+        return () => {
+          roomRef.off('value');
+        }
       }
-      
+
       const entriesQuestions = Object.entries(firebaseQuestions);
 
       const parsedQuestions = entriesQuestions.map(([key, value]) => ({

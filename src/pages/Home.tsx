@@ -13,7 +13,7 @@ import googleIconImg from '../assets/images/google-icon.svg';
 
 export function Home() {
   const history = useHistory();
-  const { user, signInWithGoogle } = useAuth();
+  const { user, signInWithGoogle, signoutGoogle } = useAuth();
   const [roomCode, setRoomCode] = useState('');
 
   async function handleCreateRoom() {
@@ -22,6 +22,14 @@ export function Home() {
     }
 
     history.push('/rooms/new');
+  }
+
+  async function handleIdentify() {
+    if (user) {
+      await signoutGoogle();
+    }
+
+    await signInWithGoogle();
   }
 
   async function handleJoinRoom(event: FormEvent) {
@@ -80,6 +88,11 @@ export function Home() {
               Entrar na sala
             </Button>
           </form>
+
+          <Button type="button" onClick={handleIdentify}>
+            <img src={googleIconImg} alt="Logo do Google" />
+            Entrar com o Google
+          </Button>
 
           <p>{user?.name}</p>
         </div>
