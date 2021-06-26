@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
@@ -27,18 +28,24 @@ export function Home() {
     event.preventDefault();
 
     if (roomCode.trim() === '') {
+      toast.error('Código da sala inválido');
       return;
     }
 
     const roomRef = await database.ref(`/rooms/${roomCode}`).get();
 
     if (!roomRef.exists()) {
-      alert(`Room does not exists: ${roomCode}`);
+      toast.error(`Sala não existe: ${roomCode}`);
       return;
     }
 
     if (roomRef.val().endedAt) {
-      alert(`Room already closed: ${roomCode}`);
+      toast.error(`Sala está fechada: ${roomCode}`);
+      return;
+    }
+
+    if (roomRef.val().authorId === user?.id) {
+      history.push(`/admin/rooms/${roomCode}`);
       return;
     }
 

@@ -24,7 +24,7 @@ export function Question({
 
   return (
     <div className={`question ${classnameAnswered} ${classnameHighlighted}`}>
-      <p>{content} {isAnswered ? '1' : ''} {isHighlighted ? '2' : ''}</p>
+      <p>{content}</p>
       <footer>
         <div className="user-info">
           <img src={author.avatar} alt={author.name} />

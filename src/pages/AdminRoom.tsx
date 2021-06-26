@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 import { database } from '../services/firebase';
-import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 import { Question } from '../components/Question';
 import { Button } from '../components/Button';
@@ -23,10 +22,7 @@ export function AdminRoom() {
   const params = useParams<RoomParams>();
   const { id: roomId } = params;
 
-  const { user } = useAuth();
   const { questions, title } = useRoom(roomId);
-
-  const [newQuestion, setNewQuestion] = useState('');
 
   async function handleEndRoom() {
     if (window.confirm('Tem certeza que você deseja encerrar esta sala?')) {
@@ -34,6 +30,7 @@ export function AdminRoom() {
         endedAt: new Date()
       });
 
+      toast.success('Sala encerrada com sucesso');
       history.push('/');
     }
   }
@@ -42,20 +39,24 @@ export function AdminRoom() {
     if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
       await database.ref(`/rooms/${roomId}/questions/${questionId}`).remove();
     }
+
+    toast.success('Pergunta excluída com sucesso');
   }
 
   async function handleCheckQuestionAsAnswered(questionId: string) {
-    alert(`/rooms/${roomId}/questions/${questionId}/questions/${questionId}`);
     await database.ref(`/rooms/${roomId}/questions/${questionId}`).update({
       isAnswered: true,
     });
+
+    toast.success('Pergunta marcada como respondida com sucesso');
   }
 
   async function handleHighlightedQuestion(questionId: string) {
-    alert(`/rooms/${roomId}/questions/${questionId}/questions/${questionId}`);
     await database.ref(`/rooms/${roomId}/questions/${questionId}`).update({
       isHighlighted: true,
     });
+
+    toast.success('Pergunta destacada com sucesso');
   }
 
   return (
@@ -75,30 +76,6 @@ export function AdminRoom() {
           <h1>Sala {title}</h1>
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
-
-        <form>
-          <textarea
-            placeholder="O que você quer perguntar?"
-            onChange={event => setNewQuestion(event.target.value)}
-            value={newQuestion}
-          />
-          <div className="form-footer">
-            {user
-              ? (
-                <div className="user-info">
-                  <img src={user.avatar} alt={user.name} />
-                  <span>{user.name}</span>
-                </div>
-              )
-              : (
-                <span>
-                  Para enviar uma pergunta,
-                  <button>faça seu login</button>
-                </span>
-              )}
-            <Button type="submit" disabled={!user}>Enviar perguntas</Button>
-          </div>
-        </form>
 
         <div className="question-list">
           {questions.map(question => {

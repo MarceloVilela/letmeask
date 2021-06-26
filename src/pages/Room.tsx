@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
@@ -28,11 +29,13 @@ export function Room() {
     event.preventDefault();
 
     if (newQuestion.trim() === '') {
+      toast.error('Pergunta inválida, informe o que você quer perguntar');
       return;
     }
 
     if (!user) {
-      throw new Error('Você precisa estar logado');
+      toast.error('Você precisa estar logado');
+      return;
     }
 
     const question = {
@@ -47,17 +50,23 @@ export function Room() {
 
     await database.ref(`/rooms/${roomId}/questions`).push(question);
 
+    toast.success('Pergunta enviada com sucesso');
+
     setNewQuestion('');
   }
 
   async function handleLikeQuestion(questionId: string, likedId: string | undefined) {
     if (likedId) {
       await database.ref(`/rooms/${roomId}/questions/${questionId}/likes/${likedId}`).remove();
+
+      toast.success('Like removido com sucesso');
     }
     else {
       await database.ref(`/rooms/${roomId}/questions/${questionId}/likes`).push({
         authorId: user?.id,
       });
+
+      toast.success('Like marcado com sucesso');
     }
   }
 
