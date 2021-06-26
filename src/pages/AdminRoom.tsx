@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { database } from '../services/firebase';
+import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 import { Header } from '../components/Header';
 import { Question } from '../components/Question';
@@ -13,7 +14,8 @@ import '../styles/room.scss';
 import deleteImg from '../assets/images/delete.svg';
 import checkImg from '../assets/images/check.svg';
 import answerImg from '../assets/images/answer.svg';
-import { useAuth } from '../hooks/useAuth';
+import closeImg from '../assets/images/close.svg';
+import emptyImg from '../assets/images/empty-questions.svg';
 
 type RoomParams = {
   id: string;
@@ -89,7 +91,10 @@ export function AdminRoom() {
   return (
     <div id="page-room">
       <Header roomId={roomId}>
-        <Button onClick={handleEndRoom}>Encerrar sala</Button>
+        <Button className="end-room" onClick={handleEndRoom}>
+          <img src={closeImg} alt="Encerrar sala" />
+          Encerrar sala
+        </Button>
       </Header>
 
       <main className="content">
@@ -138,6 +143,13 @@ export function AdminRoom() {
             )
           })}
         </div>
+
+        {!questions.length && (
+          <div>
+            <img src={emptyImg} alt="Ainda não há questões para esta sala" />
+            <p>Ainda não há questões para esta sala</p>
+          </div>
+        )}
 
         <ModalConfirm
           onCancel={() => setConfirmActionName('')}
