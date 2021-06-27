@@ -1,0 +1,40 @@
+footer.footer {
+  width: 100%;
+  background: var(--bg-500);;
+
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-500);
+
+  a,
+  button {
+    color: var(--color-500);;
+    background: var(--app-500);
+    padding: 8px;
+    text-decoration: none;
+  }
+
+  a,
+  button {
+    height: 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    background: #835afd;
+    color: #fff;
+    padding: 0 32px;
+    margin: 8px 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+    border: 0;
+
+    transition: filter 0.2s;
+
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+}

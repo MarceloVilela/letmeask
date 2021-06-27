@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
 import { UserInfo } from '../components/UserInfo';
+import { Footer } from '../components/Footer';
 import { Button } from '../components/Button';
 
 import '../styles/auth.scss';
@@ -67,6 +68,7 @@ export function Home() {
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as dúvidas da sua audiência em tempo-real</p>
+        <Footer />
       </aside>
 
       <main>

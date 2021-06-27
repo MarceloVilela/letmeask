@@ -6,6 +6,7 @@ import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
 import { Question } from '../components/Question';
 import { ModalConfirm } from '../components/ModalConfirm';
 import { UserInfo } from '../components/UserInfo';
@@ -164,6 +165,8 @@ export function AdminRoom() {
           icon={confirmActionName === 'deleteQuestion' ? 'delete' : 'close'}
         />
       </main>
+
+      <Footer />
     </div>
   );
 }

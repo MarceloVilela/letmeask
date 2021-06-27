@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import { database } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
+import { UserInfo } from '../components/UserInfo';
+import { Footer } from '../components/Footer';
 import { Button } from '../components/Button';
 
 import '../styles/auth.scss';
@@ -37,6 +39,7 @@ export function NewRoom() {
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>
         <p>Tire as dúvidas da sua audiência em tempo-real</p>
+        <Footer />
       </aside>
 
       <main>
@@ -55,11 +58,14 @@ export function NewRoom() {
               Criar sala
             </Button>
           </form>
-          <p>
-            Quer entrar em uma sala existente? <a href="/rooms/new#">clique aqui</a>
-          </p>
 
-          <p>{user?.name}</p>
+          <div className="acess-profile">
+            {user?.name && <UserInfo />}
+          </div>
+
+          <p>
+            Quer entrar em uma sala existente? <a href="/">clique aqui</a>
+          </p>
         </div>
       </main>
     </div>

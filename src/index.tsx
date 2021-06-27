@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Toaster } from 'react-hot-toast';
 
 import App from './App';
+import { ThemeContextProvider } from './contexts/ThemeContext';
 
 import './services/firebase';
 
@@ -16,7 +17,10 @@ ReactDOM.render(
         reverseOrder={false}
       />
     </div>
-    <App />
+
+    <ThemeContextProvider>
+      <App />
+    </ThemeContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

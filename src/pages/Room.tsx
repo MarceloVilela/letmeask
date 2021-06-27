@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 import { Question } from '../components/Question';
 import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
 import { UserInfo } from '../components/UserInfo';
 import { Button } from '../components/Button';
 
@@ -141,6 +142,8 @@ export function Room() {
         </div>
 
       </main>
+
+      <Footer />
     </div>
   );
 }

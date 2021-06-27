@@ -4,9 +4,22 @@
   box-sizing: border-box;
 }
 
+.container-theme {
+  --bg-500: #f8f8f8;
+  --color-500: #29292e;
+  --app-500: #835afd;
+}
+
+.container-theme.dark {
+  --bg-500: #29292e;
+  --color-500: #ccc;
+  --app-500: #835afd;
+}
+
+
 body {
-  background: #f8f8f8;
-  color: #29292e;
+  background: var(--bg-500);
+  color: var(--color-500);
 }
 
 body,
